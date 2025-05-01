@@ -1,36 +1,68 @@
----
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash
-hero:
-  tagline: Congrats on setting up a new Starlight project!
-  image:
-    file: ../../assets/houston.webp
-  actions:
-    - text: Example Guide
-      link: /guides/example/
-      icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
----
+import { useEffect, useState } from 'react';
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+export const meta = {
+  title: 'Você clicou. Agora veja isso!',
+  description: 'Teste social com anúncios integrados',
+}
 
-## Next steps
+export default function Page() {
+  const [nome, setNome] = useState('');
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const de = params.get('de');
+    if (de) setNome(de.charAt(0).toUpperCase() + de.slice(1));
+  }, []);
+
+  return (
+    <div style={{ textAlign: 'center', padding: '2rem' }}>
+      <h1 style={{ color: '#00ff88' }}>VOCÊ CLICOU. E ISSO DIZ MUITO SOBRE VOCÊ.</h1>
+
+      <p style={{ fontSize: '1.2rem' }}>
+        {nome ? (
+          <>Essa mensagem foi enviada por <strong>{nome}</strong>. </>
+        ) : null}
+        Você é daquelas pessoas que não ignoram o que recebem.
+      </p>
+
+      <p><strong>Isso foi um teste social.</strong></p>
+
+      <p>Agora compartilhe com seus contatos e veja quem realmente dá atenção ao que você envia.</p>
+
+      <hr style={{ margin: '2rem 0' }} />
+
+      <h2>👉 Frase para compartilhar:</h2>
+      <code style={{ display: 'block', background: '#111', padding: '10px', borderRadius: '8px', marginTop: '10px' }}>
+        Isso me fez pensar em você... depois me diz o que achou 👀
+      </code>
+      <button
+        onClick={() => {
+          const texto = `Isso me fez pensar em você... depois me diz o que achou 👀 ${window.location.href}`;
+          navigator.clipboard.writeText(texto);
+          alert("Frase copiada! Agora cole no WhatsApp, Facebook ou onde quiser.");
+        }}
+        style={{
+          marginTop: '20px',
+          padding: '10px 20px',
+          background: '#00ff88',
+          color: '#000',
+          border: 'none',
+          borderRadius: '10px',
+          fontWeight: 'bold',
+          cursor: 'pointer'
+        }}
+      >
+        Copiar Frase com Link
+      </button>
+
+      <hr style={{ margin: '2rem 0' }} />
+
+      <h2>🤑 Publicidade:</h2>
+      {/* Cole seu código de ads abaixo */}
+      <iframe
+        src="https://via.placeholder.com/728x90.png?text=Seu+Anúncio+Aparece+Aqui"
+        style={{ width: '728px', height: '90px', border: 'none', margin: '20px 0' }}
+      ></iframe>
+    </div>
+  );
+}
